@@ -58,8 +58,6 @@
             </intent-filter>
         </receiver>
 
-
-
         <service
             android:name="cn.jpush.android.service.PushService"
             android:process=":multiprocess"
