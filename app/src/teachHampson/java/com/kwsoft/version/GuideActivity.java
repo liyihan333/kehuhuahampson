@@ -152,7 +152,12 @@ public class GuideActivity extends Activity implements OnClickListener, OnPageCh
             @Override
             public void onClick(View view) {
                 Log.e(TAG, "onClick: 是否走点击进入主页");
-                toMainPage();
+               // toMainPage();
+                Intent intent = new Intent();
+                intent.setClass(GuideActivity.this, StuLoginActivity.class);
+                Log.e(TAG, "onClick: StuProLoginActivity");
+                startActivity(intent);
+                finish();
             }
         });
     }

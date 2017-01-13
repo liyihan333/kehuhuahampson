@@ -316,4 +316,10 @@ public class StuMainActivity extends BaseActivity implements View.OnClickListene
         Utils.stopPollingService(this, SessionService.class, SessionService.ACTION);
 
     }
+
+    @Override
+    protected void onStop() {
+        Utils.stopPollingService(this, SessionService.class, SessionService.ACTION);
+        super.onStop();
+    }
 }

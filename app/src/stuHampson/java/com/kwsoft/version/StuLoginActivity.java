@@ -433,7 +433,5 @@ public class StuLoginActivity extends BaseActivity implements View.OnClickListen
         Intent intent = new Intent();
         intent.setClass(StuLoginActivity.this, SetIpPortActivity.class);
         startActivity(intent);
-
     }
-
 }

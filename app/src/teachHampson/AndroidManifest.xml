@@ -11,7 +11,7 @@
         >
 
     <activity
-        android:name="com.kwsoft.version.StuProLoginActivity"
+        android:name="com.kwsoft.version.StartActivity"
         android:theme="@style/AppTheme.NoActionBar"
         android:label="@string/app_name"
         >
@@ -21,6 +21,7 @@
         </intent-filter>
 
     </activity>
+        <activity android:name="com.kwsoft.version.StuProLoginActivity"/>
         <activity android:name="com.kwsoft.version.ResetPwdActivity">
 
         </activity>
