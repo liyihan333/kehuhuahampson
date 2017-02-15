@@ -19,11 +19,16 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
             left1, left2, left3, left4, //left5, left6,
             right1, right2, right3, right4, //right5, right6,
             click_open_btn;
-    RelativeLayout click_open;
+    LinearLayout click_open;
     LinearLayout dash_ll;
-//    RelativeLayout list_opera_layout;
-//
-//    Button list_opera0,list_opera1,list_opera2;
+    LinearLayout list_opera_layout;
+
+    //  Button list_opera0, list_opera1, list_opera2;
+    TextView list_opera0_tv, list_opera1_tv, list_opera2_tv;
+
+    View line_view1, line_view2;
+
+    LinearLayout ll_list_opera0, ll_list_opera1, ll_list_opera2;
 
 
     ListViewHolder(View view) {
@@ -44,14 +49,34 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
 //        right5 = (TextView) view.findViewById(right5);
 //        right6 = (TextView) view.findViewById(right6);
 
-        click_open = (RelativeLayout) view.findViewById(R.id.click_open);
+        click_open = (LinearLayout) view.findViewById(R.id.click_open);
         click_open_btn = (TextView) view.findViewById(R.id.click_open_btn);
 
         dash_ll = (LinearLayout) view.findViewById(R.id.dash_ll);
-        //初始化三个按钮
-//        list_opera_layout= (RelativeLayout) view.findViewById(R.id.list_opera_layout);
-//        list_opera0=(Button)view.findViewById(R.id.list_opera0);
-//        list_opera1=(Button)view.findViewById(R.id.list_opera1);
-//        list_opera2=(Button)view.findViewById(R.id.list_opera2);
+        // if (!StuPra.studentProId.equals(StuPra.teachProId)) {
+        //初始化三个按钮  学员
+        list_opera_layout = (LinearLayout) view.findViewById(R.id.list_opera_layout);
+        ll_list_opera0 = (LinearLayout) view.findViewById(R.id.list_opera0);
+        ll_list_opera1 = (LinearLayout) view.findViewById(R.id.list_opera1);
+        ll_list_opera2 = (LinearLayout) view.findViewById(R.id.list_opera2);
+        // list_opera2=(LinearLayout)view.findViewById(R.id.list_opera2);
+        list_opera0_tv = (TextView) view.findViewById(R.id.list_opera0_tv);
+        list_opera1_tv = (TextView) view.findViewById(R.id.list_opera1_tv);
+        list_opera2_tv = (TextView) view.findViewById(R.id.list_opera2_tv);
+        line_view1 = view.findViewById(R.id.line_view1);
+        line_view2 = view.findViewById(R.id.line_view2);
+//        } else {
+//            //初始化三个按钮 教师
+//            list_opera_layout = (LinearLayout) view.findViewById(R.id.list_opera_layout);
+//            list_opera0 = (Button) view.findViewById(R.id.list_opera0);
+//            list_opera1 = (Button) view.findViewById(R.id.list_opera1);
+//            list_opera2 = (Button) view.findViewById(R.id.list_opera2);
+//            // list_opera2=(LinearLayout)view.findViewById(R.id.list_opera2);
+//            list_opera0_tv = (TextView) view.findViewById(R.id.list_opera0_tv);
+//            list_opera1_tv = (TextView) view.findViewById(R.id.list_opera1_tv);
+//            list_opera2_tv = (TextView) view.findViewById(R.id.list_opera2_tv);
+//            line_view1 = view.findViewById(R.id.line_view1);
+//            line_view2 = view.findViewById(R.id.line_view2);
+//        }
     }
 }

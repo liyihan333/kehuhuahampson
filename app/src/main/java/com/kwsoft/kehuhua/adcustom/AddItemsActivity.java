@@ -20,6 +20,7 @@ import com.kwsoft.kehuhua.adcustom.base.BaseActivity;
 import com.kwsoft.kehuhua.config.Constant;
 import com.kwsoft.kehuhua.urlCnn.EdusStringCallback;
 import com.kwsoft.kehuhua.urlCnn.ErrorToast;
+import com.kwsoft.kehuhua.urlCnn.MemoEdusStringCallback;
 import com.kwsoft.kehuhua.utils.DataProcess;
 import com.kwsoft.kehuhua.widget.CommonToolbar;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -134,7 +135,7 @@ public class AddItemsActivity extends BaseActivity {
                 .params(paramsMap)
                 .url(volleyUrl)
                 .build()
-                .execute(new EdusStringCallback(mContext) {
+                .execute(new MemoEdusStringCallback(mContext) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         dialog.dismiss();
@@ -143,7 +144,7 @@ public class AddItemsActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onResponse(String response, int id) {
+                    public void edusOnResponse(String response, int id) {
                         Log.e(TAG, "onResponse: "+"  id  "+id);
                         setStore(response);
                     }
@@ -237,7 +238,7 @@ public class AddItemsActivity extends BaseActivity {
                         .get()
                         .url(volleyUrl)
                         .build()
-                        .execute(new EdusStringCallback(mContext) {
+                        .execute(new MemoEdusStringCallback(mContext) {
                             @Override
                             public void onError(Call call, Exception e, int id) {
                                 dialog.dismiss();
@@ -247,7 +248,7 @@ public class AddItemsActivity extends BaseActivity {
                             }
 
                             @Override
-                            public void onResponse(String response, int id) {
+                            public void edusOnResponse(String response, int id) {
                                 Log.e(TAG, "onResponse: "+"  id  "+id);
                                 Log.e("TAG", "获得添加结果" + response);
                                 String isCommitSuccess = String.valueOf(response);
@@ -402,7 +403,7 @@ public class AddItemsActivity extends BaseActivity {
                 .params(parMap)
                 .url(volleyUrl)
                 .build()
-                .execute(new EdusStringCallback(mContext) {
+                .execute(new MemoEdusStringCallback(mContext) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         dialog.dismiss();
@@ -411,7 +412,7 @@ public class AddItemsActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onResponse(String response, int id) {
+                    public void edusOnResponse(String response, int id) {
                         Log.e(TAG, "onResponse: "+"  id  "+id);
                         putValue(response);
                     }

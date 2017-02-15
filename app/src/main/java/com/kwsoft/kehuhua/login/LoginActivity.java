@@ -32,6 +32,7 @@ import com.kwsoft.kehuhua.bean.LoginError;
 import com.kwsoft.kehuhua.config.Constant;
 import com.kwsoft.kehuhua.urlCnn.EdusStringCallback;
 import com.kwsoft.kehuhua.urlCnn.ErrorToast;
+import com.kwsoft.kehuhua.urlCnn.MemoEdusStringCallback;
 import com.kwsoft.kehuhua.utils.BadgeUtil;
 import com.kwsoft.kehuhua.utils.CloseActivityClass;
 import com.kwsoft.kehuhua.utils.DiskLruCacheHelper;
@@ -288,7 +289,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     .params(paramsMap)
                     .url(volleyUrl)
                     .build()
-                    .execute(new EdusStringCallback(LoginActivity.this) {
+                    .execute(new MemoEdusStringCallback(LoginActivity.this) {
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             ErrorToast.errorToast(mContext,e);
@@ -297,7 +298,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         }
 
                         @Override
-                        public void onResponse(String response, int id) {
+                        public void edusOnResponse(String response, int id) {
                             Log.e(TAG, "onResponse: "+"  id  "+id);
                             check(response);
                         }

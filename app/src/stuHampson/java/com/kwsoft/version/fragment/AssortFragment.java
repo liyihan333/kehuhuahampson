@@ -1,5 +1,6 @@
 package com.kwsoft.version.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -23,8 +24,10 @@ import com.kwsoft.kehuhua.adcustom.base.BaseActivity;
 import com.kwsoft.kehuhua.config.Constant;
 import com.kwsoft.kehuhua.urlCnn.EdusStringCallback;
 import com.kwsoft.kehuhua.urlCnn.ErrorToast;
+import com.kwsoft.kehuhua.urlCnn.MemoEdusStringCallback;
 import com.kwsoft.kehuhua.utils.DataProcess;
 import com.kwsoft.kehuhua.utils.Utils;
+import com.kwsoft.version.StuLoginActivity;
 import com.kwsoft.version.view.AsortGridView;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -207,7 +210,7 @@ public class AssortFragment extends Fragment {
                     .params(map)
                     .url(volleyUrl)
                     .build()
-                    .execute(new EdusStringCallback(getActivity()) {
+                    .execute(new MemoEdusStringCallback(getActivity()) {
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             ErrorToast.errorToast(mContext, e);
@@ -215,7 +218,7 @@ public class AssortFragment extends Fragment {
                         }
 
                         @Override
-                        public void onResponse(String response, int id) {
+                        public void edusOnResponse(String response, int id) {
                             Log.e(TAG, "onResponse: " + "  id  " + id);
                             check(response);
                         }
@@ -232,14 +235,22 @@ public class AssortFragment extends Fragment {
     @SuppressWarnings("unchecked")
     private void check(String menuData) {
         Map<String, Object> stuMenuMap = Utils.str2map(menuData);
-        if (stuMenuMap.containsKey("menuList")) {
-            menuListAll = (List<Map<String, Object>>) stuMenuMap.get("menuList");
-            Log.e("TAG", "sessionId=" + menuListAll.toString());
-            menuListMap.removeAll(menuListMap);
-            if (menuListAll != null && menuListAll.size() > 0) {
-                menuListMap.addAll(DataProcess.toStuParentList(menuListAll));
-                Log.e("TAG", "刷新后的父类菜单数据=" + menuListMap.toString());
+        Map<String, Object> loginfo = (Map<String, Object>) stuMenuMap.get("loginInfo");
+
+        if (String.valueOf(loginfo.get("sessionId")).equals(Constant.sessionId)) {
+            if (stuMenuMap.containsKey("menuList")) {
+                menuListAll = (List<Map<String, Object>>) stuMenuMap.get("menuList");
+                Log.e("TAG", "sessionId=" + menuListAll.toString());
+                menuListMap.removeAll(menuListMap);
+                if (menuListAll != null && menuListAll.size() > 0) {
+                    menuListMap.addAll(DataProcess.toStuParentList(menuListAll));
+                    Log.e("TAG", "刷新后的父类菜单数据=" + menuListMap.toString());
+                }
             }
+        } else {
+            Toast.makeText(getActivity(), "登陆失效，请退出登陆！", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getActivity(), StuLoginActivity.class);
+            startActivity(intent);
         }
 //        int leg = menuListMap.size() % 3;
 //        if (leg == 1) {

@@ -28,6 +28,7 @@ import com.kwsoft.kehuhua.adcustom.base.BaseActivity;
 import com.kwsoft.kehuhua.config.Constant;
 import com.kwsoft.kehuhua.urlCnn.EdusStringCallback;
 import com.kwsoft.kehuhua.urlCnn.ErrorToast;
+import com.kwsoft.kehuhua.urlCnn.MemoEdusStringCallback;
 import com.kwsoft.kehuhua.utils.DataProcess;
 import com.kwsoft.kehuhua.utils.Utils;
 import com.zhy.http.okhttp.OkHttpUtils;

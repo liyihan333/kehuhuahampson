@@ -14,6 +14,7 @@ import com.kwsoft.kehuhua.config.Constant;
 import com.kwsoft.kehuhua.login.LoginActivity;
 import com.kwsoft.kehuhua.urlCnn.EdusStringCallback;
 import com.kwsoft.kehuhua.urlCnn.ErrorToast;
+import com.kwsoft.kehuhua.urlCnn.MemoEdusStringCallback;
 import com.kwsoft.kehuhua.utils.CloseActivityClass;
 import com.kwsoft.kehuhua.utils.DiskLruCacheHelper;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -87,7 +88,7 @@ public class IsLoginActivity extends Activity {
                 .params(paramsMap)
                 .url(loginUrl)
                 .build()
-                .execute(new EdusStringCallback(IsLoginActivity.this) {
+                .execute(new MemoEdusStringCallback(IsLoginActivity.this) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         ErrorToast.errorToast(mContext,e);
@@ -96,7 +97,7 @@ public class IsLoginActivity extends Activity {
                     }
 
                     @Override
-                    public void onResponse(String response, int id) {
+                    public void edusOnResponse(String response, int id) {
                         Log.e(TAG, "onResponse: "+"  id  "+id);
                         check(response);//除非用户名密码输错，否则不会到这里
                     }

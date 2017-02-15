@@ -28,6 +28,7 @@ import com.kwsoft.kehuhua.config.Constant;
 import com.kwsoft.kehuhua.hampson.activity.StarRatingBarActivity;
 import com.kwsoft.kehuhua.urlCnn.EdusStringCallback;
 import com.kwsoft.kehuhua.urlCnn.ErrorToast;
+import com.kwsoft.kehuhua.urlCnn.MemoEdusStringCallback;
 import com.kwsoft.kehuhua.utils.CloseActivityClass;
 import com.kwsoft.kehuhua.widget.CommonToolbar;
 import com.kwsoft.version.StuPra;
@@ -213,7 +214,7 @@ public class InfoTwoActivity extends BaseActivity implements View.OnClickListene
                     }
                 });
                 SimpleAdapter adapter = null;
-                if (StuPra.studentProId.equals("5704e45c7cf6c0b2d9873da6") && btnNameLists.contains("确认下课") && btnNameLists.contains("作业")) {
+                if (StuPra.studentProId.equals(StuPra.teachProId) && btnNameLists.contains("确认下课") && btnNameLists.contains("作业")) {
                     adapter = new SimpleAdapter(
                             this,
                             operaButtonSet.subList(0, 1),
@@ -252,11 +253,11 @@ public class InfoTwoActivity extends BaseActivity implements View.OnClickListene
                                         case 18://关联添加页面
                                             String buttonName = String.valueOf(operaButtonSetMap.get("buttonName"));
                                             Log.e(TAG, "onItemClick: buttonName " + buttonName);
-                                            if (buttonName.contains("确认下课") && StuPra.studentProId.equals("57159822f07e75084cb8a1fe")) {
+                                            if (buttonName.contains("确认下课") && StuPra.studentProId.equals(StuPra.stuProId)) {
                                                 Intent mIntentEdit = new Intent(mContext, StarRatingBarActivity.class);
                                                 mIntentEdit.putExtra("itemSet", operaButtonSetMapStr);
                                                 startActivityForResult(mIntentEdit, FINISH_ATY);
-                                            } else if (StuPra.studentProId.equals("5704e45c7cf6c0b2d9873da6") && btnNameLists.contains("确认下课") && btnNameLists.contains("作业")) {
+                                            } else if (StuPra.studentProId.equals(StuPra.teachProId) && btnNameLists.contains("确认下课") && btnNameLists.contains("作业")) {
                                                 Intent mIntentEdit = new Intent(mContext, OperateDataTwoActivity.class);
                                                 Map<String, Object> operaButtonSetMap1 = operaButtonSet.get(1);
                                                 operaButtonSetMap1.put("tableIdList", tableId);
@@ -381,7 +382,7 @@ public class InfoTwoActivity extends BaseActivity implements View.OnClickListene
                 .params(delMapParams)
                 .url(volleyUrl)
                 .build()
-                .execute(new EdusStringCallback(InfoTwoActivity.this) {
+                .execute(new MemoEdusStringCallback(InfoTwoActivity.this) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         ErrorToast.errorToast(mContext, e);
@@ -389,7 +390,7 @@ public class InfoTwoActivity extends BaseActivity implements View.OnClickListene
                     }
 
                     @Override
-                    public void onResponse(String response, int id) {
+                    public void edusOnResponse(String response, int id) {
                         Log.e(TAG, "onResponse: " + "  id  " + id);
                         Log.e("TAG", "删除返回数据" + response);
                         String isSuccess = response.substring(0, 1);

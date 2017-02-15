@@ -35,6 +35,7 @@ import com.kwsoft.kehuhua.adcustom.base.BaseActivity;
 import com.kwsoft.kehuhua.config.Constant;
 import com.kwsoft.kehuhua.urlCnn.EdusStringCallback;
 import com.kwsoft.kehuhua.urlCnn.ErrorToast;
+import com.kwsoft.kehuhua.urlCnn.MemoEdusStringCallback;
 import com.kwsoft.kehuhua.utils.DataProcess;
 import com.kwsoft.kehuhua.zxing.CaptureActivity;
 import com.kwsoft.version.ResetPwdActivity;
@@ -101,7 +102,7 @@ public class StudyFragment extends Fragment implements View.OnClickListener {
         iv_head = (ImageView) view.findViewById(R.id.iv_head);
 
         //设置首页头像
-       // Bitmap bitmap= BitmapFactory.decodeFile(StuPra.hpsStuHeadPath);
+        // Bitmap bitmap= BitmapFactory.decodeFile(StuPra.hpsStuHeadPath);
 //       Drawable drawable= getResources().getDrawable(R.mipmap.icon);
 //        BitmapDrawable bd = (BitmapDrawable) drawable;
 //        Bitmap bitmap = bd.getBitmap();
@@ -281,7 +282,7 @@ public class StudyFragment extends Fragment implements View.OnClickListener {
                     cnName = String.valueOf(listMap.get(i).get("cnName"));
                     map.put("ctType", "3");
                     map.put("cnName", cnName);
-                   // int j = i % 4;
+                    // int j = i % 4;
                     map.put("image", imgs2[i]);
                     map.put("SourceDataId", listMap.get(i).get("homeSetId") + "_" + listMap.get(i).get("index"));
                     map.put("penetratePageId", listMap.get(i).get("phonePageId"));
@@ -453,7 +454,7 @@ public class StudyFragment extends Fragment implements View.OnClickListener {
                     .params(paramsMap)
                     .url(volleyUrl)
                     .build()
-                    .execute(new EdusStringCallback(getActivity()) {
+                    .execute(new MemoEdusStringCallback(getActivity()) {
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             ErrorToast.errorToast(mContext, e);
@@ -462,7 +463,7 @@ public class StudyFragment extends Fragment implements View.OnClickListener {
                         }
 
                         @Override
-                        public void onResponse(String response, int id) {
+                        public void edusOnResponse(String response, int id) {
                             Log.e(TAG, "onResponse: " + "  id  " + id);
                             mainPage(response);
                         }
@@ -483,66 +484,70 @@ public class StudyFragment extends Fragment implements View.OnClickListener {
                     });
             Map<String, Object> loginfo = (Map<String, Object>) menuMap.get("loginInfo");
             Constant.USERID = String.valueOf(loginfo.get("USERID"));
-            Constant.sessionId = String.valueOf(loginfo.get("sessionId"));
-//            List<Map<String, Object>> menuListMap1 = (List<Map<String, Object>>) menuMap.get("roleFollowList");
-//            List<Map<String, Object>> menuListMap2 = (List<Map<String, Object>>) menuMap.get("menuList");
-            List<Map<String, Object>> menuListMap1 = null;
-            if (menuMap.containsKey("roleFollowList")) {
-                menuListMap1 = (List<Map<String, Object>>) menuMap.get("roleFollowList");
-                Log.e("menuListMap1", JSON.toJSONString(menuListMap1));
-            }
+            //Constant.sessionId = String.valueOf(loginfo.get("sessionId"));
+            if (String.valueOf(loginfo.get("sessionId")).equals(Constant.sessionId)) {
+                List<Map<String, Object>> menuListMap1 = null;
+                if (menuMap.containsKey("roleFollowList")) {
+                    menuListMap1 = (List<Map<String, Object>>) menuMap.get("roleFollowList");
+                    Log.e("menuListMap1", JSON.toJSONString(menuListMap1));
+                }
 
-            List<Map<String, Object>> menuListMap2 = null;
-            if (menuMap.containsKey("menuList")) {
-                menuListMap2 = (List<Map<String, Object>>) menuMap.get("menuList");
-                Log.e("menuListMap2", JSON.toJSONString(menuListMap2));
-            }
+                List<Map<String, Object>> menuListMap2 = null;
+                if (menuMap.containsKey("menuList")) {
+                    menuListMap2 = (List<Map<String, Object>>) menuMap.get("menuList");
+                    Log.e("menuListMap2", JSON.toJSONString(menuListMap2));
+                }
 //看板模块数据
-            String arrStr = "";
-            if (menuListMap1 != null && menuListMap1.size() > 0) {
-                arrStr = JSON.toJSONString(menuListMap1);
-            }
-            parentList.clear();
-            parentList = getkanbanData(arrStr);
-            if (parentList != null && parentList.size() > 0) {
-                setKanbanAdapter(parentList);
-            }
-            //菜单列表中的gridview数据
-            String menuStr = "";
-            if (menuListMap2 != null && menuListMap2.size() > 0) {
-                menuStr = JSON.toJSONString(menuListMap2);
-            }
-            if (menuStr != null && menuStr.length() > 0) {
-                menuListAll.clear();
-                menuListAll = JSON.parseObject(menuStr,
-                        new TypeReference<List<Map<String, Object>>>() {
-                        });
-                if (menuListAll.size() > 0) {
-                    //展示菜单
-                    menuListMap.clear();
+                String arrStr = "";
+                if (menuListMap1 != null && menuListMap1.size() > 0) {
+                    arrStr = JSON.toJSONString(menuListMap1);
+                }
+                parentList.clear();
+                parentList = getkanbanData(arrStr);
+                if (parentList != null && parentList.size() > 0) {
+                    setKanbanAdapter(parentList);
+                }
+                //菜单列表中的gridview数据
+                String menuStr = "";
+                if (menuListMap2 != null && menuListMap2.size() > 0) {
+                    menuStr = JSON.toJSONString(menuListMap2);
+                }
+                if (menuStr != null && menuStr.length() > 0) {
+                    menuListAll.clear();
+                    menuListAll = JSON.parseObject(menuStr,
+                            new TypeReference<List<Map<String, Object>>>() {
+                            });
+                    if (menuListAll.size() > 0) {
+                        //展示菜单
+                        menuListMap.clear();
 //                    menuListMap =  DataProcess.toStuParentList(menuListAll);
-                    menuListMap = getMenuListData(menuListAll);
-                    setMenuAdapter(menuListMap);
+                        menuListMap = getMenuListData(menuListAll);
+                        setMenuAdapter(menuListMap);
 
+                    } else {
+                        Toast.makeText(getActivity(), "无分类数据", Toast.LENGTH_SHORT).show();
+                    }
+                    //pull_refresh_scrollview.setMode(PullToRefreshBase.Mode.DISABLED);
+
+                    // Call onRefreshComplete when the list has been refreshed.
+                    //在更新UI后，无需其它Refresh操作，系统会自己加载新的listView
+                    pull_refresh_scrollview.onRefreshComplete();
+                    if (isResume == 0) {
+                        Toast.makeText(getActivity(), "数据已刷新", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(getActivity(), "无分类数据", Toast.LENGTH_SHORT).show();
-                }
-                //pull_refresh_scrollview.setMode(PullToRefreshBase.Mode.DISABLED);
-
-                // Call onRefreshComplete when the list has been refreshed.
-                //在更新UI后，无需其它Refresh操作，系统会自己加载新的listView
-                pull_refresh_scrollview.onRefreshComplete();
-                if (isResume == 0) {
-                    Toast.makeText(getActivity(), "数据已刷新", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                pull_refresh_scrollview.onRefreshComplete();
-                Log.e("无数据","无数据");
+                    pull_refresh_scrollview.onRefreshComplete();
+                    Log.e("无数据", "无数据");
 //                if (isResume == 0) {
 //                    Toast.makeText(getActivity(), "暂无数据", Toast.LENGTH_SHORT).show();
 //                }
+                }
+                isResume = 0;
+            } else {
+                Toast.makeText(getActivity(), "登陆失效，请退出登陆！", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), StuLoginActivity.class);
+                startActivity(intent);
             }
-            isResume = 0;
         } catch (Exception e) {
             e.printStackTrace();
         }

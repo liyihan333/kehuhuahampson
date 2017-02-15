@@ -39,9 +39,11 @@ import com.kwsoft.kehuhua.config.Constant;
 import com.kwsoft.kehuhua.hampson.activity.KanBanLRActivity;
 import com.kwsoft.kehuhua.urlCnn.EdusStringCallback;
 import com.kwsoft.kehuhua.urlCnn.ErrorToast;
+import com.kwsoft.kehuhua.urlCnn.MemoEdusStringCallback;
 import com.kwsoft.kehuhua.utils.DataProcess;
 import com.kwsoft.kehuhua.zxing.CaptureActivity;
 import com.kwsoft.version.StuInfoActivity;
+import com.kwsoft.version.StuLoginActivity;
 import com.kwsoft.version.TodayCourseTableActivity;
 import com.kwsoft.version.androidRomType.AndtoidRomUtil;
 import com.kwsoft.version.view.StudyGridView;
@@ -204,6 +206,9 @@ public class StudyFragment extends Fragment implements View.OnClickListener {
         getActivity().registerReceiver(broadcastReceiver, filter);
     }
 
+    /**
+     * 上面四个按钮
+     */
     private void setMenuModel() {
         //菜单列表中的gridview数据
         if ((homePageListstr != null) && (homePageListstr.length() > 0)) {
@@ -651,7 +656,7 @@ public class StudyFragment extends Fragment implements View.OnClickListener {
                     .params(paramsMap)
                     .url(volleyUrl)
                     .build()
-                    .execute(new EdusStringCallback(getActivity()) {
+                    .execute(new MemoEdusStringCallback(getActivity()) {
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             ErrorToast.errorToast(mContext, e);
@@ -659,7 +664,7 @@ public class StudyFragment extends Fragment implements View.OnClickListener {
                         }
 
                         @Override
-                        public void onResponse(String response, int id) {
+                        public void edusOnResponse(String response, int id) {
                             Log.e(TAG, "onResponse: " + "  id  " + id);
                             mainPage(response);
                         }
@@ -682,23 +687,29 @@ public class StudyFragment extends Fragment implements View.OnClickListener {
 
             Map<String, Object> loginfo = (Map<String, Object>) menuMap.get("loginInfo");
             Constant.USERID = String.valueOf(loginfo.get("USERID"));
-            Constant.sessionId = String.valueOf(loginfo.get("sessionId"));
-            List<Map<String, Object>> menuListMap1 = (List<Map<String, Object>>) menuMap.get("roleFollowList");
-            // List<Map<String, Object>> menuListMap2 = (List<Map<String, Object>>) menuMap.get("menuList");
+            //Constant.sessionId = String.valueOf(loginfo.get("sessionId"));
+            if ((String.valueOf(loginfo.get("sessionId"))).equals(Constant.sessionId)) {
+                List<Map<String, Object>> menuListMap1 = (List<Map<String, Object>>) menuMap.get("roleFollowList");
+                // List<Map<String, Object>> menuListMap2 = (List<Map<String, Object>>) menuMap.get("menuList");
 //看板模块数据
-            String arrStr = JSON.toJSONString(menuListMap1);
-            parentList.clear();
-            parentList = getkanbanData(arrStr);
-            setKanbanAdapter(parentList);
+                String arrStr = JSON.toJSONString(menuListMap1);
+                parentList.clear();
+                parentList = getkanbanData(arrStr);
+                setKanbanAdapter(parentList);
 
-            //在更新UI后，无需其它Refresh操作，系统会自己加载新的listView
-            pull_refresh_scrollview.onRefreshComplete();
-            pull_refresh_scrollview.onRefreshComplete();
-            if (isResume == 0) {
-                Toast.makeText(getActivity(), getResources().getString(R.string.data_refresh), Toast.LENGTH_SHORT).show();
+                //在更新UI后，无需其它Refresh操作，系统会自己加载新的listView
+                pull_refresh_scrollview.onRefreshComplete();
+                pull_refresh_scrollview.onRefreshComplete();
+                if (isResume == 0) {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.data_refresh), Toast.LENGTH_SHORT).show();
+                }
+
+                isResume = 0;
+            } else {
+                Toast.makeText(getActivity(), "登陆失效，请退出登陆！", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), StuLoginActivity.class);
+                startActivity(intent);
             }
-
-            isResume = 0;
 
         } catch (Exception e) {
             e.printStackTrace();

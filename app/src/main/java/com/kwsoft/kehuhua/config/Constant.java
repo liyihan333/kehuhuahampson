@@ -48,6 +48,7 @@ public class Constant {
     public final static String requestEdit = "update_interfaceToUpdate.do";
     public final static String requestDelete = "delete_interfaceDelete.do";
     public final static String commitEdit = "update_interfaceUpdate.do";
+    public final static String directDicreation="update_interfaceDicrectTrigger.do";//直接操作
 
     public final static String requestTreeDialog = "treeDialog_interfaceToList.do";
     public final static String requestMaxRule = "add_interfaceAjaxGetMaxRule.do";

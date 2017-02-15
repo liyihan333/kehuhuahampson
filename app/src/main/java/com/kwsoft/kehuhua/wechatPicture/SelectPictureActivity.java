@@ -23,6 +23,7 @@ import com.kwsoft.kehuhua.adcustom.R;
 import com.kwsoft.kehuhua.adcustom.base.BaseActivity;
 import com.kwsoft.kehuhua.urlCnn.EdusStringCallback;
 import com.kwsoft.kehuhua.urlCnn.ErrorToast;
+import com.kwsoft.kehuhua.urlCnn.MemoEdusStringCallback;
 import com.kwsoft.kehuhua.utils.DataProcess;
 import com.kwsoft.kehuhua.wechatPicture.andio.MediaManager;
 import com.kwsoft.kehuhua.widget.CommonToolbar;
@@ -326,7 +327,7 @@ public class SelectPictureActivity extends BaseActivity implements View.OnClickL
                 .addFile("myFile", myFile.get(num).getName(), myFile.get(num))
                 .url(url)
                 .build()
-                .execute(new EdusStringCallback(SelectPictureActivity.this) {
+                .execute(new MemoEdusStringCallback(SelectPictureActivity.this) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         ErrorToast.errorToast(mContext, e);
@@ -334,7 +335,7 @@ public class SelectPictureActivity extends BaseActivity implements View.OnClickL
                     }
 
                     @Override
-                    public void onResponse(String response, int id) {
+                    public void edusOnResponse(String response, int id) {
                         try {
                             if (num + 1 < myFile.size()) {//一直请求到最后一个
                                 num++;

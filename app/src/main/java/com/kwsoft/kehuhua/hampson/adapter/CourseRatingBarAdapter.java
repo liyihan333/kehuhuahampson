@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.kwsoft.kehuhua.adcustom.R;
 import com.kwsoft.kehuhua.hampson.view.FlexBoxLayout;
 
@@ -112,19 +114,60 @@ public class CourseRatingBarAdapter extends BaseAdapter {
             FlexBoxLayout ll_cb_layout = (FlexBoxLayout) view.findViewById(R.id.autolayout);
             //满意度，字段选择
 //        FlexBoxLayout ll_cb_layout = (FlexBoxLayout) view.findViewById(R.id.autolayout);
-            ll_cb_layout.setHorizontalSpace(17);
+            ll_cb_layout.setHorizontalSpace(10);
             ll_cb_layout.setVerticalSpace(10);
             ll_cb_layout.removeAllViews();
+            Log.e(TAG, "getView: list " + map.toString());
             //然后可以直接使用这个类中的控件，对控件进行操作，而不用重复去findViewById了
-            //课程名称
-            tv_title.setText(map.get(1).get("fieldCnName2"));
-            //我的评价
-            my_ping_jia.setText(map.get(2).get("fieldCnName"));
-            //老师标题和老师名字
-            teach_name_title.setText(map.get(0).get("fieldCnName"));
-            tv_teach_name.setText(map.get(0).get("fieldCnName2"));
-            String pingJiaMiaoShu = map.get(7).get("fieldCnName2");
-            Log.e(TAG, "getView: 总数 "+(map.size()-1)+" 现在执行到 pingJiaMiaoShu");
+            String xingJi = "", pingJiaMiaoShu , pingjiaMiaoShuSec;
+            String allItemData = map.get(0).get("allItemData");
+            Map<String, Object> allItemDataMap = JSON.parseObject(allItemData,
+                    new TypeReference<Map<String, Object>>() {
+                    });
+            String DIC_AFM_10 = String.valueOf(allItemDataMap.get("DIC_AFM_10"));
+            Log.e(TAG, "getView: DIC_AFM_10 "+DIC_AFM_10 );
+            if (DIC_AFM_10.contains("一对一")) {
+                //一对一
+                //课程名称
+                //   tv_title.setText(map.get(1).get("fieldCnName2"));
+                tv_title.setText(map.get(6).get("fieldCnName2"));
+                //我的评价
+                //my_ping_jia.setText(map.get(2).get("fieldCnName"));
+                my_ping_jia.setText(map.get(4).get("fieldCnName"));
+                //老师标题和老师名字
+                teach_name_title.setText(map.get(0).get("fieldCnName"));
+                tv_teach_name.setText(map.get(0).get("fieldCnName2"));
+                pingJiaMiaoShu = map.get(7).get("fieldCnName2");
+                // String pingJiaMiaoShu = map.get(4).get("fieldCnName2");
+                Log.e(TAG, "getView: map " + map.toString());
+                Log.e(TAG, "getView: 总数 " + (map.size() - 1) + " 现在执行到 pingJiaMiaoShu");
+
+                //获取星级数字
+                xingJi = map.get(2).get("fieldCnName2");
+                //获取最底层评价描述
+                pingjiaMiaoShuSec = String.valueOf(map.get(4).get("fieldCnName2"));
+            } else {
+                //班课
+                //课程名称
+                //tv_title.setText(map.get(1).get("fieldCnName2"));
+                tv_title.setText(map.get(0).get("fieldCnName2"));
+                //我的评价
+                //my_ping_jia.setText(map.get(2).get("fieldCnName"));
+                my_ping_jia.setText(map.get(4).get("fieldCnName"));
+                //老师标题和老师名字
+                teach_name_title.setText(map.get(0).get("fieldCnName"));
+                tv_teach_name.setText(map.get(0).get("fieldCnName2"));
+                pingJiaMiaoShu = map.get(6).get("fieldCnName2");
+                // String pingJiaMiaoShu = map.get(4).get("fieldCnName2");
+                Log.e(TAG, "getView: map " + map.toString());
+                Log.e(TAG, "getView: 总数 " + (map.size() - 1) + " 现在执行到 pingJiaMiaoShu");
+
+                //获取星级数字
+                xingJi = map.get(2).get("fieldCnName2");
+                //获取最底层评价描述
+                pingjiaMiaoShuSec = String.valueOf(map.get(4).get("fieldCnName2"));
+            }
+
             if (pingJiaMiaoShu != null && pingJiaMiaoShu.length() > 0) {
                 String[] tags = pingJiaMiaoShu.split(",");
                 Log.e(TAG, "getView: pingJiaMiaoShu " + pingJiaMiaoShu);
@@ -137,8 +180,29 @@ public class CourseRatingBarAdapter extends BaseAdapter {
                 }
             }
             ll_cb_layout.setVisibility(View.VISIBLE);
-            //获取星级数字
-            String xingJi = map.get(2).get("fieldCnName2");
+//            //课程名称
+//            tv_title.setText(map.get(1).get("fieldCnName2"));
+//            //我的评价
+//            my_ping_jia.setText(map.get(2).get("fieldCnName"));
+//            //老师标题和老师名字
+//            teach_name_title.setText(map.get(0).get("fieldCnName"));
+//            tv_teach_name.setText(map.get(0).get("fieldCnName2"));
+//            String pingJiaMiaoShu = map.get(7).get("fieldCnName2");
+//            Log.e(TAG, "getView: 总数 "+(map.size()-1)+" 现在执行到 pingJiaMiaoShu");
+//            if (pingJiaMiaoShu != null && pingJiaMiaoShu.length() > 0) {
+//                String[] tags = pingJiaMiaoShu.split(",");
+//                Log.e(TAG, "getView: pingJiaMiaoShu " + pingJiaMiaoShu);
+////                ll_cb_layout.removeAllViews();
+//                for (String tag : tags) {
+//                    TextView textview = (TextView) LayoutInflater.from(mContext).inflate(R.layout.assess_list_cb_item, null);
+//                    Log.e("tag", tag + "?" + tags.length);
+//                    textview.setText(tag);
+//                    ll_cb_layout.addView(textview);
+//                }
+//            }
+//            ll_cb_layout.setVisibility(View.VISIBLE);
+//            //获取星级数字
+//            String xingJi = map.get(2).get("fieldCnName2");
             switch (xingJi) {
                 case "五星":
                     star0.setBackgroundResource(R.mipmap.star_ratingbar_full);
@@ -186,11 +250,17 @@ public class CourseRatingBarAdapter extends BaseAdapter {
 
             }
             //获取最底层评价描述
-            String pingjiaMiaoShu=String.valueOf(map.get(4).get("fieldCnName2"));
-            if (!pingjiaMiaoShu.equals("")||!pingjiaMiaoShu.equals("null")) {
+//            String pingjiaMiaoShu=String.valueOf(map.get(4).get("fieldCnName2"));
+//            if (!pingjiaMiaoShu.equals("")||!pingjiaMiaoShu.equals("null")) {
+//
+//                tv_teach_content.setText(map.get(4).get("fieldCnName2"));
+//            }else{
+//                tv_teach_content.setText("无评价内容");
+//            }
+            if (!pingjiaMiaoShuSec.equals("") || !pingjiaMiaoShuSec.equals("null")) {
 
-                tv_teach_content.setText(map.get(4).get("fieldCnName2"));
-            }else{
+                tv_teach_content.setText(pingjiaMiaoShuSec);
+            } else {
                 tv_teach_content.setText("无评价内容");
             }
         } catch (Exception e) {

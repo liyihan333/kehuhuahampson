@@ -27,6 +27,7 @@ import com.kwsoft.kehuhua.config.Constant;
 import com.kwsoft.kehuhua.sessionService.SessionService;
 import com.kwsoft.kehuhua.urlCnn.EdusStringCallback;
 import com.kwsoft.kehuhua.urlCnn.ErrorToast;
+import com.kwsoft.kehuhua.urlCnn.MemoEdusStringCallback;
 import com.kwsoft.kehuhua.utils.CloseActivityClass;
 import com.kwsoft.kehuhua.utils.Utils;
 import com.kwsoft.kehuhua.widget.CnToolbar;
@@ -91,7 +92,7 @@ public class StuMainActivity extends BaseActivity implements View.OnClickListene
             sPreferences.edit().putString("useridOld", Constant.USERID).apply();
         }
         PgyUpdateManager.register(this);
-        Utils.startPollingService(mContext, 30, SessionService.class, SessionService.ACTION);//启动20分钟一次的轮询获取session服务
+        //Utils.startPollingService(mContext, 30, SessionService.class, SessionService.ACTION);//启动20分钟一次的轮询获取session服务
         registerMessageReceiver();  // used for receive msg
 
     }
@@ -110,7 +111,7 @@ public class StuMainActivity extends BaseActivity implements View.OnClickListene
                 .params(paramsMap)
                 .url(admissionInfoUrl)
                 .build()
-                .execute(new EdusStringCallback(StuMainActivity.this) {
+                .execute(new MemoEdusStringCallback(StuMainActivity.this) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         ErrorToast.errorToast(mContext, e);
@@ -118,7 +119,7 @@ public class StuMainActivity extends BaseActivity implements View.OnClickListene
                     }
 
                     @Override
-                    public void onResponse(String response, int id) {
+                    public void edusOnResponse(String response, int id) {
                         Log.e(TAG, "网络获取添加数据" + response);
                         //DLCH.put(volleyUrl + paramsStr, jsonData);
 //                        setStore(jsonData);
@@ -140,7 +141,7 @@ public class StuMainActivity extends BaseActivity implements View.OnClickListene
                                 .params(paramsMap2)
                                 .url(admissionInfoUrl2)
                                 .build()
-                                .execute(new EdusStringCallback(StuMainActivity.this) {
+                                .execute(new MemoEdusStringCallback(StuMainActivity.this) {
                                     @Override
                                     public void onError(Call call, Exception e, int id) {
                                         ErrorToast.errorToast(mContext, e);
@@ -148,7 +149,7 @@ public class StuMainActivity extends BaseActivity implements View.OnClickListene
                                     }
 
                                     @Override
-                                    public void onResponse(String response, int id) {
+                                    public void edusOnResponse(String response, int id) {
                                         Log.e(TAG, "网络获取添加数据" + response);
                                         admissInfoContent = response;
 
@@ -408,7 +409,7 @@ public class StuMainActivity extends BaseActivity implements View.OnClickListene
     public void onDestroy() {
         unregisterReceiver(mMessageReceiver);
         super.onDestroy();
-        Utils.stopPollingService(this, SessionService.class, SessionService.ACTION);
+      //  Utils.stopPollingService(this, SessionService.class, SessionService.ACTION);
     }
 
 
